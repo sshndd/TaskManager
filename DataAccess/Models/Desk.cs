@@ -11,6 +11,6 @@ namespace TaskManager.api.Models
         public User Admin { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }
-        public List<Task> Tasks { get; set; } = new List<Task>();
+        public List<Objective> Tasks { get; set; } = new List<Objective>();
     }
 }

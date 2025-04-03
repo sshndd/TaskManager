@@ -1,14 +1,14 @@
-using TaskManager.api.Extension;
+using BusinessLogic.Extension;
+using DataAccess.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+builder.Services.AddDataAccess(builder.Configuration);
+builder.Services.AddBusinessLogic();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddMsSqlServerDbContext(builder.Configuration);
 
 var app = builder.Build();
 
