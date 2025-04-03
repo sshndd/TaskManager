@@ -1,4 +1,4 @@
-﻿using BusinessLogic.Services.UserServices;
+﻿using BusinessLogic.Services.UserService;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BusinessLogic.Extension

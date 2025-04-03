@@ -1,30 +1,46 @@
-﻿using DataAccess.Repositories.UserRepository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccess.Models;
+using DataAccess.Repositories.UserRepository;
+using System.Net;
 using TaskManager.api.Models;
 using TaskManager.Common.Models;
 
-namespace BusinessLogic.Services.UserServices
+namespace BusinessLogic.Services.UserService
 {
     internal class UserService(IUserRepository userRepository) : IUserService
     {
-        public async Task CreateUserAsync(UserModel userDto, CancellationToken cancellationToken)
+        public async Task<ServerResponse> CreateUserAsync(UserModel userModel, CancellationToken cancellationToken)
         {
-            var newUser = new User
+            try
             {
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
-                Email = userDto.Email,
-                Password = userDto.Password,
-                Status = userDto.Status,
-                Phone = userDto.Phone,
-                Photo = userDto.Photo,
-            };
+                var newUser = new User
+                {
+                    FirstName = userModel.FirstName,
+                    LastName = userModel.LastName,
+                    Email = userModel.Email,
+                    Password = userModel.Password,
+                    Status = userModel.Status,
+                    Phone = userModel.Phone,
+                    Photo = userModel.Photo,
+                };
 
-            await userRepository.CreateUserAsync(newUser, cancellationToken);
+                await userRepository.Create(newUser, cancellationToken);
+                return new ServerResponse()
+                {
+                    IsSucess = true,
+                    StatusCode = HttpStatusCode.Created,
+                    Result = newUser
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ServerResponse()
+                {
+                    IsSucess = false,
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = { "Что-то пошло не так", ex.Message }
+                };
+            }
+
         }
     }
 }

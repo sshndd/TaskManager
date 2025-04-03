@@ -7,8 +7,8 @@ using TaskManager.api.Models;
 
 namespace DataAccess.Repositories.UserRepository
 {
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<User>
     {
-        Task CreateUserAsync(User user, CancellationToken cancellationToken = default);
+
     }
 }

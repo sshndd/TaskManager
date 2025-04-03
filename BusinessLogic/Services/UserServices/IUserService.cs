@@ -1,9 +1,10 @@
-﻿using TaskManager.Common.Models;
+﻿using DataAccess.Models;
+using TaskManager.Common.Models;
 
-namespace BusinessLogic.Services.UserServices
+namespace BusinessLogic.Services.UserService
 {
     public interface IUserService
     {
-        Task CreateUserAsync(UserModel userDto, CancellationToken cancellationToken = default);
+        Task<ServerResponse> CreateUserAsync(UserModel userModel, CancellationToken cancellationToken = default);
     }
 }
