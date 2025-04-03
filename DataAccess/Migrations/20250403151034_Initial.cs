@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TaskManager.api.Migrations
+namespace DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -130,7 +131,7 @@ namespace TaskManager.api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tasks",
+                name: "Objectives",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -149,15 +150,15 @@ namespace TaskManager.api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tasks", x => x.Id);
+                    table.PrimaryKey("PK_Objectives", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Tasks_Desks_DeskId",
+                        name: "FK_Objectives_Desks_DeskId",
                         column: x => x.DeskId,
                         principalTable: "Desks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tasks_Users_CreatorId",
+                        name: "FK_Objectives_Users_CreatorId",
                         column: x => x.CreatorId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -174,6 +175,16 @@ namespace TaskManager.api.Migrations
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Objectives_CreatorId",
+                table: "Objectives",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Objectives_DeskId",
+                table: "Objectives",
+                column: "DeskId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProjectAdmins_UserId",
                 table: "ProjectAdmins",
                 column: "UserId");
@@ -187,26 +198,16 @@ namespace TaskManager.api.Migrations
                 name: "IX_ProjectUser_ProjectsId",
                 table: "ProjectUser",
                 column: "ProjectsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tasks_CreatorId",
-                table: "Tasks",
-                column: "CreatorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tasks_DeskId",
-                table: "Tasks",
-                column: "DeskId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ProjectUser");
+                name: "Objectives");
 
             migrationBuilder.DropTable(
-                name: "Tasks");
+                name: "ProjectUser");
 
             migrationBuilder.DropTable(
                 name: "Desks");

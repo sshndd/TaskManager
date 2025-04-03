@@ -1,6 +1,6 @@
 ﻿namespace TaskManager.api.Models
 {
-    public class Task : CommonObjects
+    public class Objective : CommonObjects
     {
         public int Id { get; set; }
         public DateTime StartDate { get; set; }
