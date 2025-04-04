@@ -1,5 +1,5 @@
-using BusinessLogic.Extension;
-using DataAccess.Extension;
+using TaskManager.BLL.Extension;
+using TaskManager.DAL.Extension;
 
 var builder = WebApplication.CreateBuilder(args);
 

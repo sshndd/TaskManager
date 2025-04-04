@@ -1,5 +1,5 @@
-﻿using BusinessLogic.Services.UserService;
-using DataAccess.Models;
+﻿using TaskManager.BLL.Services.UserService;
+using TaskManager.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Common.Models;
 

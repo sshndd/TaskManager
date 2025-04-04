@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusinessLogic\BusinessLogic.csproj" />
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+    <ProjectReference Include="..\TaskManager.BLL\TaskManager.BLL.csproj" />
+    <ProjectReference Include="..\TaskManager.DAL\TaskManager.DAL.csproj" />
   </ItemGroup>
 
 </Project>
