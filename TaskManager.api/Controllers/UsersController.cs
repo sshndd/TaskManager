@@ -12,10 +12,14 @@ namespace TaskManager.api.Controllers
     {
 
         [HttpPost]
-        public async Task<ActionResult<ServerResponse>> CreateUserAsync([FromBody] UserModel userModel)
+        public async Task<ActionResult<ServerResponse>> CreateUser([FromBody] UserModel userModel)
         {
             var response = await userService.CreateUserAsync(userModel);
-            return response;
+
+            if (response.IsSucess == true)
+                return Ok(response);
+            else
+                return BadRequest(response);
         }
 
     }
