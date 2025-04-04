@@ -1,4 +1,4 @@
-﻿using System.Runtime.CompilerServices;
+﻿using TaskManager.DAL.Models.Abstractions;
 
 namespace TaskManager.DAL.Models
 {
@@ -11,6 +11,6 @@ namespace TaskManager.DAL.Models
         public User Admin { get; set; }
         public int ProjectId { get; set; }
         public Project Project { get; set; }
-        public List<Objective> Tasks { get; set; } = new List<Objective>();
+        public List<Objective> Objectives { get; set; } = new List<Objective>();
     }
 }

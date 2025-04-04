@@ -1,5 +1,5 @@
-﻿using TaskManager.BLL.Services.UserService;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TaskManager.BLL.Services.UserServices;
 
 namespace TaskManager.BLL.Extension
 {

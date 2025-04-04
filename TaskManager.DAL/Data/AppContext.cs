@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using TaskManager.Common.Models;
 using TaskManager.DAL.Models;
 
@@ -18,7 +17,7 @@ namespace TaskManager.DAL.Data
             Database.EnsureCreated();
             if (Users.Any(u => u.Status == UserStatus.Admin) == false)
             {
-                var admin = new User() {FirstName = "Roman", LastName = "Serkov", Email = "Admin@admin.com", Password = "qwerty123", Status = UserStatus.Admin};
+                var admin = new User("Roman", "Serkov", "admin@admin.com", "qwerty123", UserStatus.Admin);
                 Users.Add(admin);
                 SaveChanges();
             }

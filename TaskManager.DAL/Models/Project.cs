@@ -1,4 +1,6 @@
-﻿namespace TaskManager.DAL.Models
+﻿using TaskManager.DAL.Models.Abstractions;
+
+namespace TaskManager.DAL.Models
 {
     public class Project : CommonObjects
     {

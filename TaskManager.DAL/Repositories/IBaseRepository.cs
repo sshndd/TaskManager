@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TaskManager.DAL.Repositories
+﻿namespace TaskManager.DAL.Repositories
 {
     public interface IBaseRepository<T>
     {
