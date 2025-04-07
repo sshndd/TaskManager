@@ -5,11 +5,10 @@ namespace TaskManager.BLL.Services.UserServices
 {
     public interface IUserService
     {
-        Task<ServerResponse> CreateUserAsync(UserModel userModel, CancellationToken cancellationToken = default);
-        Task<ServerResponse> UpdateUserAsync(int id, UserModel userModel, CancellationToken cancellation = default);
-        Task<ServerResponse> DeleteUserAsync(int id, CancellationToken cancellationToken = default);
-        //Task<ServerResponse> GetUsers(CancellationToken cancellationToken = default);
-        Task<ServerResponse> GetAllUsers(CancellationToken cancellationToken = default);
-        Task<ServerResponse> CreateMuitiplyUsersAsync(List<UserModel> userModels, CancellationToken cancellationToken = default);
+        Task<bool> CreateUserAsync(UserModel userModel, CancellationToken cancellationToken = default);
+        Task<bool> UpdateUserAsync(int id, UserModel userModel, CancellationToken cancellationToken = default);
+        Task<bool> DeleteUserAsync(int id, CancellationToken cancellationToken = default);
+        Task<bool> CreateMuitiplyUsersAsync(List<UserModel> userModels, CancellationToken cancellationToken = default);
+        Task<IEnumerable<UserModel>> GetUsersAsync(CancellationToken cancellationToken = default);
     }
 }

@@ -1,8 +1,6 @@
 ﻿using TaskManager.BLL.Services.UserServices;
-using TaskManager.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Common.Models;
-using System.Net;
 
 namespace TaskManager.api.Controllers
 {
@@ -11,64 +9,46 @@ namespace TaskManager.api.Controllers
 
     public class UsersController(IUserService userService) : ControllerBase
     {
+        [HttpGet]
+        public async Task<IActionResult> GetUsers()
+        {
+            return Ok(await userService.GetUsersAsync());
+        }
 
         [HttpPost]
-        public async Task<ActionResult<ServerResponse>> CreateUser([FromBody] UserModel userModel)
+        public async Task<IActionResult> CreateUser([FromBody] UserModel userModel)
         {
-            var response = await userService.CreateUserAsync(userModel);
+            if (userModel != null)
+            {
+                return Ok(await userService.CreateUserAsync(userModel));
+            }
+            return BadRequest("Модель данных пуста");
+        }
 
-            if (response.IsSucess == true)
-                return Ok(response);
-            else
-                return BadRequest(response);
+        [HttpPost]
+        public async Task<IActionResult> CreateMuitiplyUsers([FromBody] List<UserModel> userModels)
+        {
+            if (userModels != null && userModels.Count > 0)
+            {
+                return Ok(await userService.CreateMuitiplyUsersAsync(userModels));
+            }
+            return BadRequest("Модель данных пуста");
         }
 
         [HttpPatch("{id}")]
-        public async Task<ActionResult<ServerResponse>> UpdateUser(int id, [FromBody] UserModel userModel)
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserModel userModel)
         {
-            var response = await userService.UpdateUserAsync(id, userModel);
-
-            if (response.IsSucess == true)
-                return Ok(response);
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-                return NotFound(response);
-            else 
-                return BadRequest(response);
-
+            if (userModel != null)
+            {
+                return await userService.UpdateUserAsync(id, userModel) ? Ok("Успешно обновлено") : NotFound("Пользователь не найден");
+            }
+            return BadRequest("Модель данных пуста");
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<ServerResponse>> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            var response = await userService.DeleteUserAsync(id);
-
-            if (response.IsSucess == true)
-                return Ok(response);
-            else if (response.StatusCode == HttpStatusCode.NotFound)
-                return NotFound(response);
-            else
-                return BadRequest(response);
-        }
-
-        [HttpGet]
-        public async Task<ActionResult<ServerResponse>> GetAllUsers()
-        {
-            var response = await userService.GetAllUsers();
-            if (response.IsSucess == true)
-                return Ok(response);
-            else 
-                return NotFound(response);
-            
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<ServerResponse>> CreateMultUsers([FromBody] List<UserModel> userModels)
-        {
-            var response = await userService.CreateMuitiplyUsersAsync(userModels);
-            if (response.IsSucess == true)
-                return Ok(response);
-            else
-                return BadRequest(response);
+            return await userService.DeleteUserAsync(id) ? Ok("Успешно удалено") : NotFound("Пользователь не найден");
         }
     }
 }

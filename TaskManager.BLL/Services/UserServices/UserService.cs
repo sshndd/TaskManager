@@ -7,167 +7,49 @@ namespace TaskManager.BLL.Services.UserServices
 {
     internal class UserService(IUserRepository userRepository) : IUserService
     {
-        public async Task<ServerResponse> CreateMuitiplyUsersAsync(List<UserModel> userModels, CancellationToken cancellationToken = default)
+        public async Task<bool> CreateMuitiplyUsersAsync(List<UserModel> userModels, CancellationToken cancellationToken = default)
         {
-            if (userModels != null && userModels.Count > 0)
-            {
-                var newUsers = userModels.Select(u => new User(u));
-                await userRepository.CreateMultiplyUsers((List<User>)newUsers, cancellationToken);
-                return new ServerResponse()
-                {
-                    IsSucess = true,
-                    StatusCode = HttpStatusCode.OK,
-                };
-            }
-            return new ServerResponse()
-            {
-                IsSucess = false,
-                StatusCode = HttpStatusCode.BadRequest,
-                ErrorMessages = {"Список данных пуст"}
-
-            };
+            var newUsers = userModels.Select(u => new User(u));
+            return await userRepository.CreateMultiplyUsers(newUsers, cancellationToken);
         }
 
-        public async Task<ServerResponse> CreateUserAsync(UserModel userModel, CancellationToken cancellationToken)
+        public async Task<bool> CreateUserAsync(UserModel userModel, CancellationToken cancellationToken = default)
         {
-            try
-            {
-                if (userModel != null)
-                {
-                    var newUser = new User(userModel.FirstName, userModel.LastName, userModel.Email,
-                        userModel.Password, userModel.Status,userModel.Phone, userModel.Photo);
-
-                    await userRepository.Create(newUser, cancellationToken);
-                    return new ServerResponse()
-                    {
-                        IsSucess = true,
-                        StatusCode = HttpStatusCode.Created
-                    };
-                }
-                return new ServerResponse()
-                {
-                    IsSucess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = { "Модель данных пуста" }
-                };
-
-            }
-            catch (Exception ex)
-            {
-                return new ServerResponse()
-                {
-                    IsSucess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = { "Что-то пошло не так", ex.Message }
-                };
-            }
-
+            var newUser = new User(userModel.FirstName, userModel.LastName, userModel.Email, userModel.Password, userModel.Status, userModel.Phone, userModel.Photo);
+            return await userRepository.Create(newUser, cancellationToken);
         }
 
-        public async Task<ServerResponse> DeleteUserAsync(int id, CancellationToken cancellationToken)
+        public async Task<bool> DeleteUserAsync(int id, CancellationToken cancellationToken = default)
         {
-            try
+            var deletingUser = await userRepository.Get(id, cancellationToken);
+            if (deletingUser != null)
             {
-                var userForDelete = await userRepository.GetById(id, cancellationToken);
-                if (userForDelete == null)
-                {
-                    return new ServerResponse()
-                    {
-                        IsSucess = false,
-                        StatusCode = HttpStatusCode.NotFound,
-                        ErrorMessages = {"Пользователь не найден"}
-                    };
-                }
-
-                await userRepository.Delete(userForDelete, cancellationToken);
-                return new ServerResponse()
-                {
-                    IsSucess= true,
-                    StatusCode = HttpStatusCode.OK
-                };
+                return await userRepository.Delete(deletingUser, cancellationToken);
             }
-            catch (Exception ex)
-            {
-                return new ServerResponse()
-                {
-                    IsSucess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = { "Что-то пошло не так", ex.Message }
-                };
-            }
+            return false;
         }
 
-        public async Task<ServerResponse> GetAllUsers(CancellationToken cancellationToken = default)
+        public async Task<IEnumerable<UserModel>> GetUsersAsync(CancellationToken cancellationToken = default)
         {
-            var users = await userRepository.GetAll(cancellationToken);
-            if (users != null)
-            {
-                return new ServerResponse()
-                {
-                    IsSucess = true,
-                    StatusCode = HttpStatusCode.OK,
-                    Result = users
-                };
-            }
-            return new ServerResponse()
-            {
-                IsSucess = false,
-                StatusCode = HttpStatusCode.NotFound,
-                ErrorMessages = { "Ничего не найдено" }
-            };
+            return await userRepository.GetUsers(cancellationToken);
         }
 
-        public async Task<ServerResponse> UpdateUserAsync(int id, UserModel userModel, CancellationToken cancellationToken)
+        public async Task<bool> UpdateUserAsync(int id, UserModel userModel, CancellationToken cancellationToken = default)
         {
-            try
+            var updatingUser = await userRepository.Get(id, cancellationToken);
+            if (updatingUser != null)
             {
-                if (userModel != null)
-                {
-                    var userForUpdate = await userRepository.GetById(id, cancellationToken);
-                    if (userForUpdate == null)
-                    {
-                        return new ServerResponse()
-                        {
-                            IsSucess = false,
-                            StatusCode = HttpStatusCode.NotFound,
-                            ErrorMessages = { "Пользователь не найден" }
-                        };
-                    }
+                updatingUser.FirstName = userModel.FirstName;
+                updatingUser.LastName = userModel.LastName;
+                updatingUser.Email = userModel.Email;
+                updatingUser.Password = userModel.Password;
+                updatingUser.Phone = userModel.Phone;
+                updatingUser.Photo = userModel.Photo;
+                updatingUser.Status = userModel.Status;
 
-                    userForUpdate.FirstName = userModel.FirstName;
-                    userForUpdate.LastName = userModel.LastName;
-                    userForUpdate.Email = userModel.Email;
-                    userForUpdate.Password = userModel.Password;
-                    userForUpdate.Phone = userModel.Phone;
-                    userForUpdate.Photo = userModel.Photo;
-                    userForUpdate.Status = userModel.Status;
-
-                    await userRepository.Update(userForUpdate);
-
-                    return new ServerResponse()
-                    {
-                        IsSucess = true,
-                        StatusCode = HttpStatusCode.OK
-                    };
-                }
-                return new ServerResponse()
-                {
-                    IsSucess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = { "Модель данных пуста" }
-                };
+                return await userRepository.Update(updatingUser, cancellationToken);
             }
-            catch (Exception ex)
-            {
-                return new ServerResponse()
-                {
-                    IsSucess = false,
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = { "Что-то пошло не так", ex.Message }
-                };
-            }
+            return false;
         }
-
-
     }
 }

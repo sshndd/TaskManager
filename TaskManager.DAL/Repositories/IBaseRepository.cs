@@ -2,10 +2,9 @@
 {
     public interface IBaseRepository<T>
     {
-        Task<bool> Create(T entity, CancellationToken cancellationToken = default);
-        Task<T> GetById(int id, CancellationToken cancellationToken = default);
-        Task<List<T>> Select(CancellationToken cancellationToken = default);
-        Task<bool> Delete(T entity, CancellationToken cancellationToken = default);
-        Task<T> Update(T entity, CancellationToken cancellationToken = default);
+        Task<bool> Create(T model, CancellationToken cancellationToken = default);
+        Task<bool> Update(T model, CancellationToken cancellationToken = default);
+        Task<bool> Delete(T model, CancellationToken cancellationToken = default);
+        Task<T> Get(int id, CancellationToken cancellationToken = default);
     }
 }
